@@ -9,7 +9,7 @@ class Gui:
         self.model = model
         master.title("Shop")
         master.geometry(f"600x{180 + len(self.model.products) * 15}")
-        master.state("zoomed")
+        # master.state("zoomed")
         # print(f"600x{180 + len(self.model.products)*15}")
 
         # Label für Produktliste
