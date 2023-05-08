@@ -1,4 +1,3 @@
-# Testing second ListBox instead of textbox to allow deletion of items
 import tkinter as tk
 import data as data
 
@@ -14,33 +13,33 @@ class Gui:
         master.geometry("1000x600")
         # master.configure(bg="honeydew")
 
-        # Label für Produktliste
+        # Label for product list
         self.product_label = tk.Label(master, text="Produkte", font=("Arial", 16))
         self.product_label.place(x=55, y=40)
 
-        # Label für Rechnung
+        # Label for invoice
         self.invoice_label = tk.Label(master, text="Rechnung", font=("Arial", 16))
         self.invoice_label.place(x=577, y=40)
 
-        # Summen Label
+        # Label for total
         self.total_label = tk.Label(master, text="Summe: 0.00 EUR", font=("Arial", 16))
         self.total_label.place(x=577, y=70)
 
-        # Listbox für Produktliste
+        # Listbox for product list
         self.products_listbox = tk.Listbox(master, height=19, width=30, borderwidth=0, exportselection=False,
                                            font=("Arial", 16), selectbackground="lightblue", selectforeground="black")
-        for product, price in self.model.products.items():
+        for product, price in self.model.products.items():      # Add Items to Listbox
             self.products_listbox.insert(tk.END, f"{product} - {price}€")
         self.products_listbox.place(x=55, y=70)
         self.products_listbox.bind("<<ListboxSelect>>", self.chosen_product)
 
-        # Listbox für Rechnung
-        self.invoice_listbox = tk.Listbox(master, height=19, width=30, borderwidth=0, exportselection=False,
+        # Listbox for invoice
+        self.invoice_listbox = tk.Listbox(master, height=15, width=30, borderwidth=0, exportselection=False,
                                           font=("Arial", 16))
         self.invoice_listbox.place(x=577, y=105)
         self.invoice_listbox.bind("<<ListboxSelect>>", self.delete_item)
 
-        # Bezahl-Button
+        # Button to pay
         self.pay_button = tk.Button(master, text="Bezahlen", width=30, height=2, borderwidth=0,
                                     command=self.reset_invoice, font=("Arial", 16))
         self.pay_button.place(x=577, y=490)
@@ -52,7 +51,7 @@ class Gui:
         self.update_invoice()
 
     def update_invoice(self):
-        self.invoice_listbox.delete(0, tk.END)  # Empty invoice
+        self.invoice_listbox.delete(0, tk.END)      # Empty invoice
         price_sum = 0
         for product, amount in self.model.invoice.items():
             price_sum += self.model.products[product] * amount
@@ -63,10 +62,9 @@ class Gui:
         index = self.invoice_listbox.curselection()
         if index:
             product_text = self.invoice_listbox.get(index[0])
-            if "Summe" not in product_text:
-                product = product_text.split(" x ")[1].split(":")[0].strip()
-                self.model.remove_from_invoice(product)
-                self.update_invoice()
+            product = product_text.split(" x ")[1].split(":")[0].strip()
+            self.model.remove_from_invoice(product)
+            self.update_invoice()
 
     def reset_invoice(self):
         self.model.reset_invoice()
