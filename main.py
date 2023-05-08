@@ -12,6 +12,7 @@ class Gui:
         # master.state("zoomed")
         # print(f"600x{180 + len(self.model.products)*15}")
         master.geometry("1000x600")
+        # master.configure(bg="honeydew")
 
         # Label für Produktliste
         self.product_label = tk.Label(master, text="Produkte", font=("Arial", 16))
@@ -26,24 +27,22 @@ class Gui:
         self.total_label.place(x=577, y=70)
 
         # Listbox für Produktliste
-        self.products_listbox = tk.Listbox(master, height=len(self.model.products)
-                                           if len(self.model.products) < 19 else 19,
-                                           width=30, borderwidth=0, exportselection=False, font=("Arial", 16))
+        self.products_listbox = tk.Listbox(master, height=19, width=30, borderwidth=0, exportselection=False,
+                                           font=("Arial", 16), selectbackground="lightblue", selectforeground="black")
         for product, price in self.model.products.items():
             self.products_listbox.insert(tk.END, f"{product} - {price}€")
         self.products_listbox.place(x=55, y=70)
         self.products_listbox.bind("<<ListboxSelect>>", self.chosen_product)
 
         # Listbox für Rechnung
-        self.invoice_listbox = tk.Listbox(master, height=len(self.model.products)
-                                          if len(self.model.products) < 15 else 15,
-                                          width=30, borderwidth=0, exportselection=False, font=("Arial", 16))
+        self.invoice_listbox = tk.Listbox(master, height=19, width=30, borderwidth=0, exportselection=False,
+                                          font=("Arial", 16))
         self.invoice_listbox.place(x=577, y=105)
         self.invoice_listbox.bind("<<ListboxSelect>>", self.delete_item)
 
         # Bezahl-Button
-        self.pay_button = tk.Button(master, text="Bezahlen", width=30, height=2, borderwidth=0, command=self.reset_invoice,
-                                    font=("Arial", 16))
+        self.pay_button = tk.Button(master, text="Bezahlen", width=30, height=2, borderwidth=0,
+                                    command=self.reset_invoice, font=("Arial", 16))
         self.pay_button.place(x=577, y=490)
 
     def chosen_product(self, event):
